@@ -210,25 +210,7 @@
         </div>
         <!-- list job -->
         <div class="row content-task">
-            <div class="col-md-3 p-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="profile-header">
-                            <div class="row">
-                                <p class="center nameof">
-                                    Yusron Laksono
-                                </p>
-                                <span class="job-title">
-                                    <b class="bg-green">Perpustakaan</b>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="count-task">
-                            20
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {!! $html !!}
         </div>
     </div>
 </body>
@@ -245,29 +227,9 @@
 
             channel.listen('TaskEvent', function(data){
 
-                console.log(data);
-
-                var html = `<div class="col-md-3 p-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="profile-header">
-                                        <div class="row">
-                                            <p class="center nameof">
-                                                ${data.task.user_id}
-                                            </p>
-                                            <span class="job-title">
-                                                <b class="bg-green">${data.task.description}</b>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="count-task">
-                                        20
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
+                $('.content-task').html('');
                     
-                $('.content-task').append(html);
+                $('.content-task').append(data.task.html_task);
                         
                 sound.play(); 
             });
