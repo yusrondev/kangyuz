@@ -23,8 +23,6 @@
     -->
     <meta name="_token" content="{{csrf_token()}}" />
     <link href="{{ asset('backend/all.css') }}" rel="stylesheet">
-    <script src="{{ asset('backend/js/jquery-3.6.1.js') }}"></script>
-
 </head>
 
 <body>
@@ -782,8 +780,10 @@
             <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
         </div>
     </div>
+    <script type="text/javascript" src="{{ asset('backend/js/jquery-3.6.1.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/scripts/main.js') }}"></script>
-    <script src="{{ url('js/app.js') }}"></script>
+    <script type="text/javascript" src="{{ url('js/app.js') }}"></script>
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -791,7 +791,7 @@
             }
         });
     </script>
+    @stack('js')
 </body>
 
 </html>
-@stack('js')

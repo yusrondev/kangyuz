@@ -36,39 +36,30 @@
                             <tr>
                                 <th>#</th>
                                 <th>Project</th>
-                                <th>Last Name</th>
-                                <th>Username</th>
+                                <th>Flag</th>
+                                <th>Judul</th>
+                                <th>Deskripsi</th>
+                                <th>Rank</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>
-                                    <button class="btn btn-success" type="button">Done</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td>
-                                    <button class="btn btn-success" type="button">Done</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                                <td>
-                                    <button class="btn btn-success" type="button">Done</button>
-                                </td>
-                            </tr>
+                            @foreach ($task as $item)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item->user->project_name }}</td>
+                                    <td>{{ $item->flag_id }}</td>
+                                    <td>{{ $item->title }}</td>
+                                    <td>{{ $item->description }}</td>
+                                    <td>{{ $item->rank }}</td>
+                                    <td>{{ $item->status }}</td>
+                                    <td>
+                                        <a class="btn btn-info detail" data-id="{{ $item->id }}" href="">Detail</a>
+                                        <a class="btn btn-primary" href="">Proses</a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -80,7 +71,7 @@
 @push('js')
     <!-- Large modal -->
 
-    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    <div class="modal add-task fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -175,6 +166,29 @@
         </div>
     </div>
 
+    <!-- edit modal -->
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-edit-modal" style="display: none" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+    </button>
+  
+    <!-- Modal -->
+    <div class="modal modal-detail fade bd-example-modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Task</h5>
+            </div>
+            <div class="modal-body">
+            ...
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
     <!-- Pusher -->
     <script>
         $(function(){
@@ -190,33 +204,44 @@
                 jQuery.ajax({
                 processData: false,
                 contentType: false,  
-                  url        : "{{ url('administrator/store-task') }}",
-                  method     : 'POST',
-                  dataType   : "JSON",
-                  data       : form_data,
-                  success: function(result){
+                url        : "{{ url('administrator/store-task') }}",
+                method     : 'POST',
+                dataType   : "JSON",
+                data       : form_data,
+                success: function(result){
 
-                    //   Http.post("{{ url('administrator/store-task') }}", {
-                    //       'user_id'   : user_id.val(),
-                    //       'description': description.val(),
-                    //   }).then(()=>{
-
-                    //   });   
-                      
-                  }});
-               });
-
-            let channel = Echo.channel('channel-task');
-            channel.listen('TaskEvent', function(data){
-                console.log(data);
+                    let channel = Echo.channel('channel-task');
+                    channel.listen('TaskEvent', function(data){
+                        console.log(data);
+                    });
+                
+                    location.reload(); 
+                    
+                }});
             });
-
         });
 
         $(".choose-user").on("change",function(){
             var project_name = $(this).find(":selected").data("project");
             $(".project-name").val(project_name);
-        })
+        });
+
+        $('body').on('click','.detail', function(elem){
+
+            elem.preventDefault();
+            var id = $(this).data('id');
+
+            jQuery.ajax({
+            url        : "{{ url('administrator/get-task') }}" + "/" + id,
+            method     : 'GET',
+            dataType   : "JSON",
+            success: function(result){
+
+                $('.btn-edit-modal').trigger('click');
+
+            }});    
+
+        });
         
     </script>
 @endpush
