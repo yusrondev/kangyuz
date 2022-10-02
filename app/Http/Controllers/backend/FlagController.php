@@ -10,7 +10,9 @@ class FlagController extends Controller
 {
     public function index()
     {
-        return view('backend.flag.data');
+        return view('backend.flag.data', [
+            'flags' => Flag::all()
+        ]);
     }
 
     public function store(Request $request)
@@ -18,7 +20,7 @@ class FlagController extends Controller
         $code     = 0;
         $err_msg  = "successfully";
 
-        $flag              = new Flag();
+        $flag           = new Flag();
         $flag->name     = $request->name;
         
         if (!$flag->save()) {

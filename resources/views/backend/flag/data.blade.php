@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="page-title-actions">
-            <button type="button" class="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">
+            <button type="button" class="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target="#modal-add">
                 <i class="fa fa-plus"></i>
             </button>
         </div>
@@ -34,40 +34,21 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Project</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
+                            <th>Flag Name</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($flags as $flag)
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <th scope="row">{{ $loop->iteration }}</th>
+                            <td>{{ $flag->name }}</td>
                             <td>
-                                <button class="btn btn-success" type="button">Done</button>
+                                <button class="btn btn-warning btn-sm btn-edit" type="button" data-id="{{ $flag->id }}" data-name="{{ $flag->name }}">Edit</button>
+                                <button class="btn btn-danger btn-sm" type="button">Delete</button>
                             </td>
                         </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td>
-                                <button class="btn btn-success" type="button">Done</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                            <td>
-                                <button class="btn btn-success" type="button">Done</button>
-                            </td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -79,29 +60,58 @@
 @push('js')
 <!-- Large modal -->
 
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<!-- ADD MODAL -->
+<div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog ">
-        <form id="form-flag" enctype="multipart/form-data">
-            <div class="modal-content">
+        <div class="modal-content">
+            <form id="form-flag" enctype="multipart/form-data">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Tambah Task</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Tambah Flag</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="position-relative row form-group">
-                        <label class="col-sm-2 col-form-label">Project</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-4 col-form-label">Nama Flag</label>
+                        <div class="col-sm-8">
                             <input type="text" class="form-control" name="name">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary save">Save changes</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- EDIT MODAL -->
+<div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <form id="form-flag" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Flag</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="position-relative row form-group">
+                        <label class="col-sm-4 col-form-label">Nama Flag</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="name">
+                        </div>
                     </div>
                 </div>
-        </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary save">Edit</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -113,7 +123,7 @@
         const user_id = $('#user_id');
         const description = $('#description');
 
-        $('.save').click(function() {
+        $("#form-flag").submit(function(e) {
 
             var form_data = new FormData($("#form-flag")[0]);
 
@@ -135,6 +145,7 @@
 
                 }
             });
+            e.preventDefault();
         });
 
         let channel = Echo.channel('channel-task');
@@ -142,6 +153,11 @@
             console.log(data);
         });
 
+    });
+
+    $(".btn-edit").click(function(){
+        var myModal = new bootstrap.Modal(document.getElementById('modal-edit'));
+        myModal.show()
     });
 </script>
 @endpush
