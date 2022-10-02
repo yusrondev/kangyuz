@@ -16,11 +16,12 @@ class CreateTasksTable extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
+            $table->string('title');
             $table->text('description');
             $table->string('image');
             $table->string('rank');
-            $table->string('status');
-            $table->string('is_checked');
+            $table->string('status')->default('progress');
+            $table->string('is_checked')->default('no');
             $table->string('type');
             $table->timestamps();
         });

@@ -78,6 +78,10 @@
     }
 </style>
 <body>
+    <audio id="myAudio">
+        <source src="{{ asset('sound/cute_notification.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
     <div class="container-fluid">
         <!-- content header -->
         <div class="row">
@@ -205,178 +209,7 @@
 
         </div>
         <!-- list job -->
-        <div class="row">
-            <div class="col-md-3 p-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="profile-header">
-                            <div class="row">
-                                <p class="center nameof">
-                                    Yusron Laksono
-                                </p>
-                                <span class="job-title">
-                                    <b class="bg-green">Perpustakaan</b>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="count-task">
-                            20
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 p-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="profile-header">
-                            <div class="row">
-                                <p class="center nameof">
-                                    Yusron Laksono
-                                </p>
-                                <span class="job-title">
-                                    <b class="bg-green">Perpustakaan</b>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="count-task">
-                            20
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 p-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="profile-header">
-                            <div class="row">
-                                <p class="center nameof">
-                                    Yusron Laksono
-                                </p>
-                                <span class="job-title">
-                                    <b class="bg-green">Perpustakaan</b>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="count-task">
-                            20
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 p-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="profile-header">
-                            <div class="row">
-                                <p class="center nameof">
-                                    Yusron Laksono
-                                </p>
-                                <span class="job-title">
-                                    <b class="bg-green">Perpustakaan</b>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="count-task">
-                            20
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 p-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="profile-header">
-                            <div class="row">
-                                <p class="center nameof">
-                                    Yusron Laksono
-                                </p>
-                                <span class="job-title">
-                                    <b class="bg-green">Perpustakaan</b>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="count-task">
-                            20
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 p-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="profile-header">
-                            <div class="row">
-                                <p class="center nameof">
-                                    Yusron Laksono
-                                </p>
-                                <span class="job-title">
-                                    <b class="bg-green">Perpustakaan</b>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="count-task">
-                            20
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 p-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="profile-header">
-                            <div class="row">
-                                <p class="center nameof">
-                                    Yusron Laksono
-                                </p>
-                                <span class="job-title">
-                                    <b class="bg-green">Perpustakaan</b>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="count-task">
-                            20
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 p-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="profile-header">
-                            <div class="row">
-                                <p class="center nameof">
-                                    Yusron Laksono
-                                </p>
-                                <span class="job-title">
-                                    <b class="bg-green">Perpustakaan</b>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="count-task">
-                            20
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 offset-md-3 p-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="profile-header">
-                            <div class="row">
-                                <p class="center nameof">
-                                    Yusron Laksono
-                                </p>
-                                <span class="job-title">
-                                    <b class="bg-green">Perpustakaan</b>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="count-task">
-                            20
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="row content-task">
             <div class="col-md-3 p-3">
                 <div class="card">
                     <div class="card-body">
@@ -399,5 +232,47 @@
         </div>
     </div>
 </body>
+    <script src="{{ asset('js/jquery-3.6.1.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ url('js/app.js') }}"></script>
+    <!-- Pusher -->
+    <script>
+        $(function(){
+            const Echo    = window.Echo;
+
+            var sound = document.getElementById("myAudio"); 
+            let channel = Echo.channel('channel-task');
+
+            channel.listen('TaskEvent', function(data){
+
+                console.log(data);
+
+                var html = `<div class="col-md-3 p-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="profile-header">
+                                        <div class="row">
+                                            <p class="center nameof">
+                                                ${data.task.user_id}
+                                            </p>
+                                            <span class="job-title">
+                                                <b class="bg-green">${data.task.description}</b>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="count-task">
+                                        20
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    
+                $('.content-task').append(html);
+                        
+                sound.play(); 
+            });
+
+        });
+        
+    </script>
 </html>
