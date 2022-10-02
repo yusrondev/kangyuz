@@ -95,10 +95,11 @@
                         <div class="position-relative row form-group">
                             <label for="user_id" class="col-sm-2 col-form-label">Programmer</label>
                             <div class="col-sm-10">
-                                <select name="user_id" id="user_id" name="user_id" class="form-control">
-                                    <option value="1">Budi</option>
-                                    <option value="2">Anton</option>
-                                    <option value="3">Ruslan</option>
+                                <select name="user_id" id="user_id" class="form-control choose-user">
+                                    <option selected disabled>- Pilih Murid -</option>
+                                    @foreach($users as $user)
+                                        <option value="{{ $user->id }}" data-project="{{ $user->project_name }}">{{ $user->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -117,7 +118,7 @@
                         <div class="position-relative row form-group">
                             <label class="col-sm-2 col-form-label">Project</label>
                             <div class="col-sm-10">
-                                <input type="text" disabled class="form-control">
+                                <input type="text" disabled class="form-control project-name">
                             </div>
                         </div>
 
@@ -199,6 +200,11 @@
             });
 
         });
+
+        $(".choose-user").on("change",function(){
+            var project_name = $(this).find(":selected").data("project");
+            $(".project-name").val(project_name);
+        })
         
     </script>
 @endpush

@@ -5,13 +5,16 @@ namespace App\Http\Controllers\backend;
 use App\Events\TaskEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
     public function index()
     {
-        return view('backend/task/data');
+        return view('backend/task/data',[
+            'users' => User::get() 
+        ]);
     }
 
     public function store(Request $request)
