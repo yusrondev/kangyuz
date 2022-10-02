@@ -13,13 +13,11 @@ class TaskController extends Controller
 {
     public function index()
     {
-
         return view('backend/task/data',[
             'users' => User::get(),
             'flag' => Flag::get(),
-            'task' => Task::with('user')->get()
+            'task' => Task::with(['user','flag'])->get()
         ]);
-
     }
 
     public function store(Request $request)
@@ -72,6 +70,7 @@ class TaskController extends Controller
 
     public function get_task($id)
     {
-        echo json_encode($id);
+        $data = Task::with(['user','flag'])->where('id', $id)->first();
+        return json_encode($data);
     }
 }

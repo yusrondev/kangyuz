@@ -1,13 +1,13 @@
 @extends('template.backend')
-@section('active-menu-task', 'mm-active')
-@section('title-content', 'Task')
+@section('active-menu-flag', 'mm-active')
+@section('title-content', 'Flag')
 @section('description-content', 'Data pekerjaan')
 @section('content')
 <div class="app-page-title">
     <div class="page-title-wrapper">
         <div class="page-title-heading">
             <div class="page-title-icon">
-                <i class="pe-7s-car icon-gradient bg-mean-fruit">
+                <i class="pe-7s-pendrive icon-gradient bg-mean-fruit">
                 </i>
             </div>
             <div>

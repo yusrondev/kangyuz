@@ -7,7 +7,7 @@
         <div class="page-title-wrapper">
             <div class="page-title-heading">
                 <div class="page-title-icon">
-                    <i class="pe-7s-car icon-gradient bg-mean-fruit">
+                    <i class="pe-7s-display2 icon-gradient bg-mean-fruit">
                     </i>
                 </div>
                 <div>
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="page-title-actions">
-                <button type="button" class="btn mr-2 mb-2 btn-primary" data-toggle="modal"
+                <button type="button" class="btn mr-2 mb-2 show-modal btn-primary" data-toggle="modal"
                     data-target=".bd-example-modal-lg">
                     <i class="fa fa-plus"></i>
                 </button>
@@ -49,7 +49,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->user->project_name }}</td>
-                                    <td>{{ $item->flag_id }}</td>
+                                    <td>{{ $item->flag->name }}</td>
                                     <td>{{ $item->title }}</td>
                                     <td>{{ $item->description }}</td>
                                     <td>{{ $item->rank }}</td>
@@ -76,7 +76,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Tambah Task</h5>
+                    <h5 class="modal-title">Tambah Task</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -84,9 +84,9 @@
                 <form id="form-task" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="position-relative row form-group">
-                            <label for="flag" class="col-sm-2 col-form-label">Flag</label>
+                            <label for="flag_id" class="col-sm-2 col-form-label">Flag</label>
                             <div class="col-sm-10">
-                                <select name="flag" id="flag" class="form-control">
+                                <select name="flag_id" id="flag_id" class="form-control">
                                     <option selected disabled>- Pilih Flag -</option>
                                     @foreach($flag as $flags)
                                         <option value="{{ $flags->id }}">{{ $flags->name }}</option>
@@ -121,7 +121,7 @@
                         <div class="position-relative row form-group">
                             <label class="col-sm-2 col-form-label">Project</label>
                             <div class="col-sm-10">
-                                <input type="text" disabled class="form-control project-name">
+                                <input type="text" id="project_name" disabled class="form-control project-name">
                             </div>
                         </div>
 
@@ -165,30 +165,6 @@
             </div>
         </div>
     </div>
-
-    <!-- edit modal -->
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-edit-modal" style="display: none" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-    </button>
-  
-    <!-- Modal -->
-    <div class="modal modal-detail fade bd-example-modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Task</h5>
-            </div>
-            <div class="modal-body">
-            ...
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-        </div>
-    </div>
-
     <!-- Pusher -->
     <script>
         $(function(){
@@ -237,7 +213,15 @@
             dataType   : "JSON",
             success: function(result){
 
-                $('.btn-edit-modal').trigger('click');
+                $('.show-modal').trigger('click');
+                $('#flag_id').val(result.flag.id);
+                $('#user_id').val(result.user.id);
+                $('#type').val(result.type);
+                $('#project_name').val(result.user.project_name);
+                $('#title').val(result.title);
+                $('#description').text(result.description);
+                $('#rank').val(result.rank);
+                $('.modal-title').text('Edit Task');
 
             }});    
 
