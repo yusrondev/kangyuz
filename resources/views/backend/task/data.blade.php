@@ -93,6 +93,18 @@
                 <form id="form-task" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="position-relative row form-group">
+                            <label for="flag" class="col-sm-2 col-form-label">Flag</label>
+                            <div class="col-sm-10">
+                                <select name="flag" id="flag" class="form-control">
+                                    <option selected disabled>- Pilih Flag -</option>
+                                    @foreach($flag as $flags)
+                                        <option value="{{ $flags->id }}">{{ $flags->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="position-relative row form-group">
                             <label for="user_id" class="col-sm-2 col-form-label">Programmer</label>
                             <div class="col-sm-10">
                                 <select name="user_id" id="user_id" class="form-control choose-user">

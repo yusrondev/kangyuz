@@ -4,6 +4,7 @@ namespace App\Http\Controllers\backend;
 
 use App\Events\TaskEvent;
 use App\Http\Controllers\Controller;
+use App\Models\Flag;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ class TaskController extends Controller
     public function index()
     {
         return view('backend/task/data',[
-            'users' => User::get() 
+            'users' => User::get() ,
+            'flag' => Flag::get() 
         ]);
     }
 
@@ -32,6 +34,7 @@ class TaskController extends Controller
         }
 
         $task              = new Task();
+        $task->flag_id     = $request->flag_id;
         $task->title       = $request->title;
         $task->description = $request->description;
         $task->user_id     = $request->user_id;
