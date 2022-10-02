@@ -31,7 +31,7 @@
                 <div class="card-body">
 
                     <h5 class="card-title">Data pekerjaan</h5>
-                    <table class="mb-0 table table-striped">
+                    <table class="mb-0 table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -40,6 +40,7 @@
                                 <th>Judul</th>
                                 <th>Deskripsi</th>
                                 <th>Rank</th>
+                                <th>Type</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -53,6 +54,7 @@
                                     <td>{{ $item->title }}</td>
                                     <td>{{ $item->description }}</td>
                                     <td>{{ $item->rank }}</td>
+                                    <td>{{ $item->type }}</td>
                                     <td>{{ $item->status }}</td>
                                     <td>
                                         <a class="btn btn-info detail" data-id="{{ $item->id }}" href="">Detail</a>
@@ -87,7 +89,7 @@
                             <label for="flag_id" class="col-sm-2 col-form-label">Flag</label>
                             <div class="col-sm-10">
                                 <select name="flag_id" id="flag_id" class="form-control">
-                                    <option selected disabled>- Pilih Flag -</option>
+                                    <option value="0" selected disabled>- Pilih Flag -</option>
                                     @foreach($flag as $flags)
                                         <option value="{{ $flags->id }}">{{ $flags->name }}</option>
                                     @endforeach
@@ -99,7 +101,7 @@
                             <label for="user_id" class="col-sm-2 col-form-label">Programmer</label>
                             <div class="col-sm-10">
                                 <select name="user_id" id="user_id" class="form-control choose-user">
-                                    <option selected disabled>- Pilih Murid -</option>
+                                    <option value="0" selected disabled>- Pilih Programmer -</option>
                                     @foreach($users as $user)
                                         <option value="{{ $user->id }}" data-project="{{ $user->project_name }}">{{ $user->name }}</option>
                                     @endforeach
@@ -111,6 +113,7 @@
                             <label for="type" class="col-sm-2 col-form-label">type</label>
                             <div class="col-sm-10">
                                 <select name="type" id="type" name="type" class="form-control">
+                                    <option value="0" disabled selected>- Pilih Type -</option>
                                     <option value="Request">Request</option>
                                     <option value="Bug">Bug</option>
                                     <option value="Checking">Checking</option>
@@ -200,6 +203,42 @@
         $(".choose-user").on("change",function(){
             var project_name = $(this).find(":selected").data("project");
             $(".project-name").val(project_name);
+        });
+
+        $('body').on('click','.detail', function(elem){
+
+            elem.preventDefault();
+            var id = $(this).data('id');
+
+            jQuery.ajax({
+            url        : "{{ url('administrator/get-task') }}" + "/" + id,
+            method     : 'GET',
+            dataType   : "JSON",
+            success: function(result){
+
+                $('.show-modal').trigger('click');
+                $('#flag_id').val(result.flag.id);
+                $('#user_id').val(result.user.id);
+                $('#type').val(result.type);
+                $('#project_name').val(result.user.project_name);
+                $('#title').val(result.title);
+                $('#description').text(result.description);
+                $('#rank').val(result.rank);
+                $('.modal-title').text('Edit Task');
+
+            }});    
+
+        });
+
+        $('.show-modal').click(function(){
+            $('#flag_id').val('0');
+            $('#user_id').val('0');
+            $('#type').val('0');
+            $('#project_name').val('');
+            $('#title').val('');
+            $('#description').text('');
+            $('#rank').val('');
+            $('.modal-title').text('Tambah Task');
         });
 
         $('body').on('click','.detail', function(elem){

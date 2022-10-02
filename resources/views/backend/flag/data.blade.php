@@ -30,7 +30,7 @@
             <div class="card-body">
 
                 <h5 class="card-title">Data pekerjaan</h5>
-                <table class="mb-0 table table-striped">
+                <table class="mb-0 table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>#</th>
