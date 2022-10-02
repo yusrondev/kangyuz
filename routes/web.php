@@ -3,6 +3,7 @@
 use App\Events\ChatEvent;
 use App\Http\Controllers\backend\Dashboard;
 use App\Http\Controllers\backend\TaskController;
+use App\Http\Controllers\backend\FlagController;
 use App\Http\Controllers\frontend\Home;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,9 @@ Route::prefix('administrator')->group(function () {
     Route::get('dashboard', [Dashboard::class,'index']);
     Route::get('task', [TaskController::class,'index']);
     Route::post('store-task', [TaskController::class,'store']);
+    
+    Route::get('flag', [FlagController::class,'index']);
+    Route::post('store-flag', [FlagController::class,'store']);
 });
 
 
