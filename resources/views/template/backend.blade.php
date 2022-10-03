@@ -31,6 +31,28 @@
         font-weight: bold;
         font-family: calibri
     }
+
+    .status-new{
+        background-color: #ced6e0;
+        color:#2f3542;
+        padding-left: 5px;
+        padding-right: 5px;
+        border-radius: 5px;
+    }
+    .status-process{
+        background-color: #1e90ff;
+        color:#ffffff;
+        padding-left: 5px;
+        padding-right: 5px;
+        border-radius: 5px;
+    }
+    .status-finish{
+        background-color: #2ed573;
+        color:#ffffff;
+        padding-left: 5px;
+        padding-right: 5px;
+        border-radius: 5px;
+    }
 </style>
 
 <body>

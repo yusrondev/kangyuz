@@ -18,10 +18,10 @@ class CreateTasksTable extends Migration
             $table->foreignId('user_id');
             $table->integer('flag_id')->nullable()->default(1);
             $table->string('title');
-            $table->text('description');
-            $table->string('image');
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
             $table->string('rank');
-            $table->string('status')->default('progress');
+            $table->string('status')->default('new');
             $table->string('is_checked')->default('no');
             $table->string('type');
             $table->timestamps();

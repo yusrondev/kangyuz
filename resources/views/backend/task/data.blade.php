@@ -35,13 +35,13 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Project</th>
                                 <th>Flag</th>
+                                <th>Project</th>
                                 <th>Judul</th>
-                                <th>Deskripsi</th>
+                                <th>Programmer</th>
                                 <th>Rank</th>
                                 <th>Type</th>
-                                <th>Status</th>
+                                <th width="7%">Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -49,21 +49,42 @@
                             @foreach ($task as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->user->project_name }}</td>
                                     <td>{{ $item->flag->name }}</td>
+                                    <td>{{ $item->user->project_name }}</td>
                                     <td>{{ $item->title }}</td>
-                                    <td>{{ $item->description }}</td>
+                                    <td>{{ $item->user->name }}</td>
                                     <td>{{ $item->rank }}</td>
                                     <td>{{ $item->type }}</td>
-                                    <td>{{ $item->status }}</td>
                                     <td>
-                                        <a class="btn btn-info detail" data-id="{{ $item->id }}" href="">Detail</a>
-                                        <a class="btn btn-primary" href="">Proses</a>
+                                        @if($item->status == 'new')
+                                            <center>
+                                                <span class="status-new">New</span>
+                                            </center>
+                                        @elseif($item->status == 'process')
+                                            <center>
+                                                <span class="status-process">Process</span>
+                                            </center>
+                                        @else
+                                            <center>
+                                                <span class="status-finish">Selesai</span>
+                                            </center>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning detail" data-id="{{ $item->id }}">Detail</button>
+                                        
+                                        @if($item->status == 'new')
+                                            <button class="btn btn-sm btn-primary update-status" data-value="process" data-id="{{ $item->id }}">Proses</button>
+                                        @elseif($item->status == 'process')
+                                            <button class="btn btn-sm btn-success update-status" data-value="finish" data-id="{{ $item->id }}">Selesai</button>
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $task->links() }}
                 </div>
             </div>
         </div>
@@ -211,22 +232,44 @@
             var id = $(this).data('id');
 
             jQuery.ajax({
-            url        : "{{ url('administrator/get-task') }}" + "/" + id,
-            method     : 'GET',
-            dataType   : "JSON",
-            success: function(result){
+                url        : "{{ url('administrator/get-task') }}" + "/" + id,
+                method     : 'GET',
+                dataType   : "JSON",
+                success: function(result){
 
-                $('.show-modal').trigger('click');
-                $('#flag_id').val(result.flag.id);
-                $('#user_id').val(result.user.id);
-                $('#type').val(result.type);
-                $('#project_name').val(result.user.project_name);
-                $('#title').val(result.title);
-                $('#description').text(result.description);
-                $('#rank').val(result.rank);
-                $('.modal-title').text('Edit Task');
+                    $('.show-modal').trigger('click');
+                    $('#flag_id').val(result.flag.id);
+                    $('#user_id').val(result.user.id);
+                    $('#type').val(result.type);
+                    $('#project_name').val(result.user.project_name);
+                    $('#title').val(result.title);
+                    $('#description').text(result.description);
+                    $('#rank').val(result.rank);
+                    $('.modal-title').text('Edit Task');
 
-            }});    
+                }
+            });    
+        });
+        
+        $('body').on('click','.update-status', function(elem){
+
+            elem.preventDefault();
+            var id     = $(this).data('id');
+            var status = $(this).data('value');
+
+            jQuery.ajax({
+                url        : "{{ url('administrator/update-task') }}" + "/" + id,
+                method     : 'GET',
+                dataType   : "JSON",
+                data       : {
+                    status : status
+                },
+                success: function(result){
+                    if (result) {
+                        location.reload();
+                    }
+                }
+            });    
 
         });
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Flag;
 use App\Models\Task;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,8 +17,8 @@ class TaskController extends Controller
     {
         return view('backend/task/data',[
             'users' => User::get(),
-            'flag' => Flag::get(),
-            'task' => Task::with(['user','flag'])->get()
+            'flag'  => Flag::get(),
+            'task'  => Task::with(['user','flag'])->simplePaginate(10)
         ]);
     }
 
@@ -30,9 +31,11 @@ class TaskController extends Controller
         $filename = "no image";
         
         if($request->file('image')){
+
             $file     = $request->file('image');
             $filename = date('YmdHi').$file->getClientOriginalName();
             $file->move(public_path('backend/images/task'), $filename);
+        
         }
 
         $task              = new Task();
@@ -43,8 +46,7 @@ class TaskController extends Controller
         $task->image       = $filename;
         $task->rank        = $request->rank;
         $task->type        = $request->type;
-        
-        // if (!$task->save()) {
+    
         if (!$task->save()) {
         
             $code = 1;
@@ -52,46 +54,7 @@ class TaskController extends Controller
         
         }else{
 
-            $task = Task::select('*')->addSelect(DB::raw('count(user_id) as count_task, user_id, status'))
-                                 ->with('user')
-                                 ->where("status","!=","finish")
-                                 ->groupBy('user_id')
-                                 ->orderBy('count_task','DESC')
-                                 ->get();
-
-            $html = "";
-            foreach ($task as $key => $value) {
-                $count        = $value->count_task;
-                $name         = $value->user->name;
-                $project_name = $value->user->project_name;
-                
-                $html .= "<div class='col-md-3 p-3'>
-                            <div class='card'>
-                                <div class='card-body'>
-                                    <div class='profile-header'>
-                                        <div class='row'>
-                                            <p class='center nameof'>
-                                                $name
-                                            </p>
-                                            <span class='job-title'>
-                                                <b class='bg-green'>$project_name</b>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class='count-task'>
-                                        $count
-                                    </div>
-                                </div>
-                            </div>
-                        </div>";
-
-            }
-
-            $data = [
-                'html_task' => $html
-            ];
-    
-            TaskEvent::dispatch($data);
+            $this->sync_task();
         
         };
 
@@ -108,5 +71,101 @@ class TaskController extends Controller
     {
         $data = Task::with(['user','flag'])->where('id', $id)->first();
         return json_encode($data);
+    }
+
+    public function update_status(Request $request,$id)
+    {
+        Task::where('id',$id)->update([
+            'status' => $request->status
+        ]);
+
+        $this->sync_task();
+
+        return json_encode('success');
+    }
+
+    public function sync_task()
+    {
+        $task = Task::select('*')->addSelect(DB::raw('count(user_id) as count_task, user_id, status'))
+                                     ->with('user')
+                                     ->where("status","!=","finish")
+                                     ->groupBy('user_id')
+                                     ->orderBy('count_task','DESC')
+                                     ->get();
+
+        $html_task = array();
+        foreach ($task as $key => $value) {
+
+            if($value->count_task >= 11){
+                $class_count = "count-task-danger";
+            }
+            if($value->count_task <= 10){
+                $class_count = "count-task-medium";
+            }
+            if($value->count_task <= 5){
+                $class_count = "count-task";
+            }
+
+            $html_task[] = [
+
+                "count"        => $value->count_task,
+                "name"         => $value->user->name,
+                "project_name" => $value->user->project_name,
+                "class_count"  => $class_count
+            
+            ];
+        }
+
+        $projectList = Task::select('*')->addSelect(DB::raw('count(user_id) as all_task, user_id, status'))
+                                        ->with('user')
+                                        ->groupBy('user_id')
+                                        ->orderBy('all_task','DESC')
+                                        ->get();
+
+        $html_project = array();
+
+        foreach ($projectList as $key => $valueproject) {
+
+            $finishedTask = Task::select('*')->where('user_id', $valueproject->user_id)->where('status','finish')->get();
+
+            $html_project[] = [
+                
+                "name"          => $valueproject->user->name,
+                "project_name"  => $valueproject->user->project_name,
+                "all_task"      => $valueproject->all_task,
+                "finished_task" => count($finishedTask)
+            
+            ];
+        }
+
+        $scoreList = Task::select('*')->addSelect(DB::raw('count(user_id) as count_task, user_id, status'))
+                                        ->with('user')
+                                        ->where('status','finish')
+                                        ->whereDate('tasks.created_at', Carbon::today())
+                                        ->groupBy('user_id')
+                                        ->orderBy('count_task','DESC')
+                                        ->limit(3)
+                                        ->get();
+
+        $html_score_task = array();
+
+        foreach ($scoreList as $key => $valueproject) {
+
+            $html_score_task[] = [
+                
+                "name"          => $valueproject->user->name,
+                "project_name"  => $valueproject->user->project_name,
+                "count_task"    => $valueproject->count_task
+            
+            ];
+        }
+
+        $data = [
+            'html_task'       => $html_task,
+            'html_project'    => $html_project,
+            'html_score_task' => $html_score_task
+        ];
+
+        TaskEvent::dispatch($data);
     }
 }

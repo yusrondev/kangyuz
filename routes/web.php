@@ -15,6 +15,7 @@ Route::prefix('administrator')->group(function () {
     // task
     Route::get('task', [TaskController::class,'index']);
     Route::post('store-task', [TaskController::class,'store']);
+    Route::get('update-task/{id}', [TaskController::class,'update_status']);
     Route::get('get-task/{id}', [TaskController::class,'get_task']);
     
     // flag
