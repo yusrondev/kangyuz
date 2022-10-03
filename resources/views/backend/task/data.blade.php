@@ -71,7 +71,9 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning detail" data-id="{{ $item->id }}">Detail</button>
+                                        <button class="btn btn-sm btn-light detail" data-id="{{ $item->id }}">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
                                         
                                         @if($item->status == 'new')
                                             <button class="btn btn-sm btn-primary update-status" data-value="process" data-id="{{ $item->id }}">Proses</button>
