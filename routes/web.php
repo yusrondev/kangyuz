@@ -20,4 +20,6 @@ Route::prefix('administrator')->group(function () {
     // flag
     Route::get('flag', [FlagController::class,'index']);
     Route::post('store-flag', [FlagController::class,'store']);
+    Route::post('data-flag', [FlagController::class,'show']);
+    Route::post('update-flag', [FlagController::class,'update']);
 });
