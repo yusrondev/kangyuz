@@ -38,17 +38,8 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach($flags as $flag)
-                        <tr>
-                            <th scope="row">{{ $loop->iteration }}</th>
-                            <td>{{ $flag->name }}</td>
-                            <td>
-                                <button class="btn btn-warning btn-sm btn-edit" type="button" data-id="{{ $flag->id }}" data-name="{{ $flag->name }}">Edit</button>
-                                <button class="btn btn-danger btn-sm" type="button">Delete</button>
-                            </td>
-                        </tr>
-                        @endforeach
+                    <tbody class="table-body-data">
+                        
                     </tbody>
                 </table>
             </div>
@@ -91,7 +82,7 @@
 <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog ">
         <div class="modal-content">
-            <form id="form-flag" enctype="multipart/form-data">
+            <form id="form-edit-flag" enctype="multipart/form-data">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Edit Flag</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -102,6 +93,7 @@
                     <div class="position-relative row form-group">
                         <label class="col-sm-4 col-form-label">Nama Flag</label>
                         <div class="col-sm-8">
+                            <input type="hidden" class="form-control" name="id">
                             <input type="text" class="form-control" name="name">
                         </div>
                     </div>
@@ -117,8 +109,10 @@
 
 <!-- Pusher -->
 <script>
-    $(function() {
-
+    var modal_add  = new bootstrap.Modal(document.getElementById('modal-add'));
+    var modal_edit = new bootstrap.Modal(document.getElementById('modal-edit'));
+    $(document).ready(function() {
+        refresh_data();
         const Echo = window.Echo;
         const user_id = $('#user_id');
         const description = $('#description');
@@ -135,29 +129,69 @@
                 dataType: "JSON",
                 data: form_data,
                 success: function(result) {
-
-                    //   Http.post("{{ url('administrator/store-task') }}", {
-                    //       'user_id'   : user_id.val(),
-                    //       'description': description.val(),
-                    //   }).then(()=>{
-
-                    //   });   
-
+                    refresh_data();
                 }
             });
             e.preventDefault();
         });
 
-        let channel = Echo.channel('channel-task');
-        channel.listen('TaskEvent', function(data) {
-            console.log(data);
+        $("#form-edit-flag").submit(function(e) {
+
+            var form_data = new FormData($("#form-edit-flag")[0]);
+
+            jQuery.ajax({
+                processData: false,
+                contentType: false,
+                url: "{{ url('administrator/update-flag') }}",
+                method: 'POST',
+                dataType: "JSON",
+                data: form_data,
+                success: function(result) {
+                    refresh_data();
+                }
+            });
+            e.preventDefault();
         });
-
     });
 
-    $(".btn-edit").click(function(){
-        var myModal = new bootstrap.Modal(document.getElementById('modal-edit'));
-        myModal.show()
+    $("body").on("click", ".btn-edit", function(){
+        modal_edit.show();
+        
+        $('input[name="name"]').val($(this).data("name"));
+        $('input[name="id"]').val($(this).data("id"));
     });
+    
+    
+    function refresh_data(){
+        jQuery.ajax({
+            processData: false,
+            contentType: false,
+            url: "{{ url('administrator/data-flag') }}",
+            method: 'POST',
+            dataType: "JSON",
+            success: function(result) {
+                
+                let forTable = "";
+                result.forEach(function(val){
+                    forTable += `
+                        <tr>
+                            <td>${val.id}</td>
+                            <td>${val.name}</td>
+                            <td>
+                                <button type="button" class="btn mr-2 mb-2 btn-warning btn-sm btn-edit" data-id="${val.id}" data-name="${val.name}">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                $(".table-body-data").html(forTable);
+                
+                modal_edit.hide();
+                modal_add.hide();
+            }
+        });
+    }
+    
 </script>
 @endpush
