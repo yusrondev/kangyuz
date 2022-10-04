@@ -138,7 +138,7 @@
                                             <form method="POST" action="{{ route('logout') }}" x-data>
                                                 @csrf
                 
-                                                <button type="button" tabindex="0"
+                                                <button type="submit" tabindex="0"
                                                 class="dropdown-item">Keluar</button>
                                             </form>
                                         </div>

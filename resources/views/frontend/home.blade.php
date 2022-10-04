@@ -116,8 +116,16 @@
     <div class="container-fluid">
         <!-- content header -->
         <div class="row">
-
             <div class="col-md-6 content-score-task">
+                @if (count($html_score_task) <= 0)
+                    <div class="mt-3">
+                        <div class="alert alert-info">
+                            <center>
+                                <h3>Belum ada ranking hari ini</h3>
+                            </center>
+                        </div>
+                    </div>
+                @endif
                 @foreach ($html_score_task as $key => $item)
                     <div class="card mt-3">
                         <div class="card-body">
@@ -267,6 +275,7 @@
             });
 
             var list_project = "";
+
             $.each(data.task.html_project, function(key, value) {
 
                 list_project += `<tr class="push-notif-${value.user_id}">
@@ -286,6 +295,19 @@
             });
 
             var score_task = "";
+
+            var count_project = data.task.html_score_task;
+
+            if (count_project.length == 0) {
+                score_task = `<div class="mt-3">
+                                <div class="alert alert-info">
+                                    <center>
+                                        <h3>Belum ada ranking hari ini</h3>
+                                    </center>
+                                </div>
+                            </div>`;
+            }
+
             $.each(data.task.html_score_task, function(key, value) {
 
                 score_task += `<div class="card mt-3">
