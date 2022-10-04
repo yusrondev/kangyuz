@@ -158,7 +158,7 @@
                 <div class="mt-3">
                     <div class="card">
                         <div class="card-body">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered table-responsive">
                                 <thead class="table-dark">
                                     <tr>
                                         <th width="25%">
