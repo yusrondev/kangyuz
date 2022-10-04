@@ -9,6 +9,7 @@ use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
@@ -18,7 +19,7 @@ class TaskController extends Controller
         return view('backend/task/data',[
             'users' => User::get(),
             'flag'  => Flag::get(),
-            'task'  => Task::with(['user','flag'])->orderBy('id','desc')->paginate(10)
+            'task'  => Task::with(['user','flag'])->where('user_id', Auth::user()->id)->orderBy('id','desc')->paginate(10)
         ]);
     }
 
