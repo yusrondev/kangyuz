@@ -342,10 +342,12 @@
                                     </ul>
                                 </li> --}}
                             <li>
+                                @if (Auth::user()->level == 1)
                                 <a href="{{ url('administrator/flag') }}" class="@yield('active-menu-flag')">
                                     <i class="metismenu-icon pe-7s-pendrive"></i>
                                     Flag
                                 </a>
+                                @endif
                                 <a href="{{ url('administrator/task') }}" class="@yield('active-menu-task')">
                                     <i class="metismenu-icon pe-7s-display2"></i>
                                     Task

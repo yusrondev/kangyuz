@@ -113,7 +113,7 @@
                     <input type="hidden" name="old_image" id="old_image">
                     <div class="modal-body">
                         <div class="position-relative row form-group">
-                            <label for="flag_id" class="col-sm-2 col-form-label">Flag</label>
+                            <label for="flag_id" class="col-sm-2 col-form-label">Flag <b style="color:red">*</b></label>
                             <div class="col-sm-10">
                                 <select name="flag_id" id="flag_id" class="form-control">
                                     <option value="0" selected disabled>- Pilih Flag -</option>
@@ -125,7 +125,7 @@
                         </div>
 
                         <div class="position-relative row form-group">
-                            <label for="user_id" class="col-sm-2 col-form-label">Programmer</label>
+                            <label for="user_id" class="col-sm-2 col-form-label">Programmer <b style="color:red">*</b></label>
                             <div class="col-sm-10">
                                 <select name="user_id" id="user_id" class="form-control choose-user">
                                     <option value="0" selected disabled>- Pilih Programmer -</option>
@@ -137,7 +137,7 @@
                         </div>
 
                         <div class="position-relative row form-group">
-                            <label for="type" class="col-sm-2 col-form-label">type</label>
+                            <label for="type" class="col-sm-2 col-form-label">type <b style="color:red">*</b></label>
                             <div class="col-sm-10">
                                 <select name="type" id="type" name="type" class="form-control">
                                     <option value="0" disabled selected>- Pilih Type -</option>
@@ -149,21 +149,21 @@
                         </div>
 
                         <div class="position-relative row form-group">
-                            <label class="col-sm-2 col-form-label">Project</label>
+                            <label class="col-sm-2 col-form-label">Project <b style="color:red">*</b></label>
                             <div class="col-sm-10">
                                 <input type="text" id="project_name" disabled class="form-control project-name">
                             </div>
                         </div>
 
                         <div class="position-relative row form-group">
-                            <label for="title" class="col-sm-2 col-form-label">Judul</label>
+                            <label for="title" class="col-sm-2 col-form-label">Judul <b style="color:red">*</b></label>
                             <div class="col-sm-10">
                                 <input type="text" id="title" name="title" class="form-control">
                             </div>
                         </div>
 
                         <div class="position-relative row form-group">
-                            <label for="description" class="col-sm-2 col-form-label">Deskripsi</label>
+                            <label for="description" class="col-sm-2 col-form-label">Deskripsi <b style="color:red">*</b></label>
                             <div class="col-sm-10">
                                 <textarea name="description" class="form-control" id="description" cols="30" rows="10"></textarea>
                             </div>
@@ -178,7 +178,7 @@
                         </div>
 
                         <div class="position-relative row form-group">
-                            <label for="rank" class="col-sm-2 col-form-label">Rank</label>
+                            <label for="rank" class="col-sm-2 col-form-label">Rank <b style="color:red">*</b></label>
                             <div class="col-sm-10">
                                 <select name="rank" id="rank" class="form-control">
                                     <option value="Easy">Easy</option>

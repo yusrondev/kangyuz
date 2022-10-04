@@ -16,10 +16,18 @@ class TaskController extends Controller
 {
     public function index()
     {
+        if (Auth::user()->level == 1) {
+            $users = User::get();
+            $task  = Task::with(['user','flag'])->orderBy('id','desc')->paginate(10);
+        }else{
+            $users = User::where('id', Auth::user()->id)->get();
+            $task  = Task::with(['user','flag'])->where('user_id', Auth::user()->id)->orderBy('id','desc')->paginate(10);
+        }
+
         return view('backend/task/data',[
-            'users' => User::get(),
+            'users' => $users,
             'flag'  => Flag::get(),
-            'task'  => Task::with(['user','flag'])->where('user_id', Auth::user()->id)->orderBy('id','desc')->paginate(10)
+            'task'  => $task
         ]);
     }
 
