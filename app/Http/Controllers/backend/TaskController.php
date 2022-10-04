@@ -18,7 +18,7 @@ class TaskController extends Controller
         return view('backend/task/data',[
             'users' => User::get(),
             'flag'  => Flag::get(),
-            'task'  => Task::with(['user','flag'])->simplePaginate(10)
+            'task'  => Task::with(['user','flag'])->paginate(10)
         ]);
     }
 
