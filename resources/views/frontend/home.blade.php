@@ -30,36 +30,36 @@
 
     .count-task {
         text-align: center !important;
-        font-size: 60px;
+        font-size: 70px;
         background-color: #dfe4ea;
         color: #2f3542;
         font-weight: bolder
     }
     .count-task-medium {
         text-align: center !important;
-        font-size: 60px;
+        font-size: 70px;
         background-color: #ffa502;
         color: #ffffff;
         font-weight: bolder
     }
     .count-task-danger {
         text-align: center !important;
-        font-size: 60px;
+        font-size: 70px;
         background-color: #eb3b5a;
         color: #ffffff;
         font-weight: bolder
     }
 
     .job-title {
-        color: #ffffff;
-        font-size: 18px;
+        color: #00aa5b;
+        font-size: 20px;
         margin-top: -10px;
         text-align: center !important;
         margin-bottom: 20px;
     }
 
     .bg-green {
-        background-color: #78e08f;
+        background-color: #c9fde0;
         padding: 3px;
         border-radius: 5px;
     }
@@ -246,7 +246,7 @@
             $.each(data.task.html_task, function(key, value) {
 
                 html_task += `<div class='col-md-3 p-3'>
-                                    <div class='card'>
+                                    <div class='card push-notif-${value.user_id}'>
                                         <div class='card-body'>
                                             <div class='profile-header'>
                                                 <div class='row'>
@@ -269,7 +269,7 @@
             var list_project = "";
             $.each(data.task.html_project, function(key, value) {
 
-                list_project += `<tr>
+                list_project += `<tr class="push-notif-${value.user_id}">
                                         <td>
                                             <b class="project-name-blue">${value.project_name}</b>
                                         </td>
@@ -319,6 +319,15 @@
             $('.tbody-list-project').append(list_project);
 
             sound.play();
+
+            var class_blink = data.task.push_notif.user_id;
+    
+            for (let index = 0; index < 6; index++) {
+                
+                $(".push-notif-"+class_blink).fadeOut(300);
+                $(".push-notif-"+class_blink).fadeIn(300);
+                
+            }
         });
 
     });

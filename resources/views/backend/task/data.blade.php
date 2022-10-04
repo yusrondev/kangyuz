@@ -75,9 +75,9 @@
                                         </button>
                                         
                                         @if($item->status == 'new')
-                                            <button class="btn btn-sm btn-primary update-status" data-value="process" data-id="{{ $item->id }}">Proses</button>
+                                            <button class="btn btn-sm btn-primary update-status" data-userid="{{ $item->user->id }}" data-value="process" data-id="{{ $item->id }}">Proses</button>
                                         @elseif($item->status == 'process')
-                                            <button class="btn btn-sm btn-success update-status" data-value="finish" data-id="{{ $item->id }}">Selesai</button>
+                                            <button class="btn btn-sm btn-success update-status" data-userid="{{ $item->user->id }}" data-value="finish" data-id="{{ $item->id }}">Selesai</button>
                                         @endif
 
                                     </td>
@@ -278,13 +278,15 @@
             elem.preventDefault();
             var id     = $(this).data('id');
             var status = $(this).data('value');
+            var userid = $(this).data('userid');
 
             jQuery.ajax({
                 url        : "{{ url('administrator/update-task') }}" + "/" + id,
                 method     : 'GET',
                 dataType   : "JSON",
                 data       : {
-                    status : status
+                    status : status,
+                    user_id: userid
                 },
                 success: function(result){
                     if (result) {

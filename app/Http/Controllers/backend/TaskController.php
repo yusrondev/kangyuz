@@ -18,7 +18,7 @@ class TaskController extends Controller
         return view('backend/task/data',[
             'users' => User::get(),
             'flag'  => Flag::get(),
-            'task'  => Task::with(['user','flag'])->paginate(10)
+            'task'  => Task::with(['user','flag'])->orderBy('id','desc')->paginate(10)
         ]);
     }
 
@@ -54,7 +54,7 @@ class TaskController extends Controller
                 'type'        => $request->type
             ]);
 
-            $this->sync_task();
+            $this->sync_task($request->user_id);
 
         }else{
 
@@ -82,7 +82,7 @@ class TaskController extends Controller
             
             }else{
     
-                $this->sync_task();
+                $this->sync_task($request->user_id);
             
             };
             
@@ -109,12 +109,12 @@ class TaskController extends Controller
             'status' => $request->status
         ]);
 
-        $this->sync_task();
+        $this->sync_task($request->user_id);
 
         return json_encode('success');
     }
 
-    public function sync_task()
+    public function sync_task($user_id)
     {
         $task = Task::select('*')->addSelect(DB::raw('count(user_id) as count_task, user_id, status'))
                                      ->with('user')
@@ -138,6 +138,7 @@ class TaskController extends Controller
 
             $html_task[] = [
 
+                "user_id"      => $value->user->id,
                 "count"        => $value->count_task,
                 "name"         => $value->user->name,
                 "project_name" => $value->user->project_name,
@@ -160,6 +161,7 @@ class TaskController extends Controller
 
             $html_project[] = [
                 
+                "user_id"       => $valueproject->user->id,
                 "name"          => $valueproject->user->name,
                 "project_name"  => $valueproject->user->project_name,
                 "all_task"      => $valueproject->all_task,
@@ -190,10 +192,15 @@ class TaskController extends Controller
             ];
         }
 
+        $push_notif = [
+            "user_id" => $user_id
+        ];
+
         $data = [
             'html_task'       => $html_task,
             'html_project'    => $html_project,
-            'html_score_task' => $html_score_task
+            'html_score_task' => $html_score_task,
+            'push_notif'      => $push_notif
         ];
 
         TaskEvent::dispatch($data);
