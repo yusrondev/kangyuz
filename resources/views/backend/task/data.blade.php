@@ -19,7 +19,7 @@
             </div>
             <div class="page-title-actions">
                 <button type="button" class="btn mr-2 mb-2 show-modal btn-primary" data-toggle="modal"
-                    data-target=".bd-example-modal-lg">
+                    data-target=".modal">
                     <i class="fa fa-plus"></i>
                 </button>
             </div>
@@ -29,7 +29,6 @@
         <div class="col-lg-12">
             <div class="main-card mb-3 card">
                 <div class="card-body">
-
                     <h5 class="card-title">Data pekerjaan</h5>
                     <table class="mb-0 table table-striped table-bordered">
                         <thead>
@@ -94,10 +93,13 @@
 @endsection
 
 @push('js')
-    <!-- Large modal -->
-
-    <div class="modal add-task fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-        aria-hidden="true">
+    <!-- Modal add -->
+    <div class="modal"
+    id="modal-task"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="modal-task"
+    aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -107,6 +109,8 @@
                     </button>
                 </div>
                 <form id="form-task" enctype="multipart/form-data">
+                    <input type="hidden" name="id" id="id_task">
+                    <input type="hidden" name="old_image" id="old_image">
                     <div class="modal-body">
                         <div class="position-relative row form-group">
                             <label for="flag_id" class="col-sm-2 col-form-label">Flag</label>
@@ -168,6 +172,7 @@
                         <div class="position-relative row form-group">
                             <label for="image" class="col-sm-2 col-form-label">Gambar</label>
                             <div class="col-sm-10">
+                                <img id="preview-image" width="350px">
                                 <input type="file" id="image" name="image" class="form-control">
                             </div>
                         </div>
@@ -184,8 +189,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary save">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="button" class="btn btn-primary save">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -239,7 +244,22 @@
                 dataType   : "JSON",
                 success: function(result){
 
-                    $('.show-modal').trigger('click');
+                    // show modal
+                    var myModal = new bootstrap.Modal(document.getElementById("modal-task"), {});
+                    myModal.show();
+
+                    if(result.status == "process"){
+                        $('.save').html('Update');
+                        $('.form-control').attr('disabled', false);
+                        $('.project-name').attr('disabled', true);
+                    }else{
+                        $('.save').hide();
+                        $('.form-control').attr('disabled', true);
+                    }
+
+                    $('#id_task').val(result.id);
+                    $('#old_image').val(result.image);
+                    $('#preview-image').attr('src', "{{ url('backend/images/task') }}"+"/"+result.image);
                     $('#flag_id').val(result.flag.id);
                     $('#user_id').val(result.user.id);
                     $('#type').val(result.type);
@@ -276,7 +296,11 @@
         });
 
         $('.show-modal').click(function(){
+            $('.save').show();
+            $('.form-control').attr('disabled', false);
+            $('.project-name').attr('disabled', true);
             $('#flag_id').val('0');
+            $('#id_task').val('');
             $('#user_id').val('0');
             $('#type').val('0');
             $('#project_name').val('');
@@ -284,31 +308,6 @@
             $('#description').text('');
             $('#rank').val('');
             $('.modal-title').text('Tambah Task');
-        });
-
-        $('body').on('click','.detail', function(elem){
-
-            elem.preventDefault();
-            var id = $(this).data('id');
-
-            jQuery.ajax({
-            url        : "{{ url('administrator/get-task') }}" + "/" + id,
-            method     : 'GET',
-            dataType   : "JSON",
-            success: function(result){
-
-                $('.show-modal').trigger('click');
-                $('#flag_id').val(result.flag.id);
-                $('#user_id').val(result.user.id);
-                $('#type').val(result.type);
-                $('#project_name').val(result.user.project_name);
-                $('#title').val(result.title);
-                $('#description').text(result.description);
-                $('#rank').val(result.rank);
-                $('.modal-title').text('Edit Task');
-
-            }});    
-
         });
         
     </script>

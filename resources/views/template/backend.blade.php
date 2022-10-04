@@ -410,12 +410,12 @@
                                 <ul class="nav">
                                     <li class="nav-item">
                                         <a href="javascript:void(0);" class="nav-link">
-                                            Footer Link 1
+                                            {{-- Footer Link 1 --}}
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="javascript:void(0);" class="nav-link">
-                                            Footer Link 2
+                                            {{-- Footer Link 2 --}}
                                         </a>
                                     </li>
                                 </ul>
@@ -424,15 +424,15 @@
                                 <ul class="nav">
                                     <li class="nav-item">
                                         <a href="javascript:void(0);" class="nav-link">
-                                            Footer Link 3
+                                            {{-- Footer Link 3 --}}
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="javascript:void(0);" class="nav-link">
-                                            <div class="badge badge-success mr-1 ml-0">
+                                            {{-- <div class="badge badge-success mr-1 ml-0">
                                                 <small>NEW</small>
-                                            </div>
-                                            Footer Link 4
+                                            </div> --}}
+                                            {{-- Footer Link 4 --}}
                                         </a>
                                     </li>
                                 </ul>

@@ -29,34 +29,64 @@ class TaskController extends Controller
         $err_msg  = "successfully";
         
         $filename = "no image";
-        
-        if($request->file('image')){
 
-            $file     = $request->file('image');
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('backend/images/task'), $filename);
-        
-        }
+        if (!empty($request->id)) {
+            
+            if($request->file('image')){
 
-        $task              = new Task();
-        $task->flag_id     = $request->flag_id;
-        $task->title       = $request->title;
-        $task->description = $request->description;
-        $task->user_id     = $request->user_id;
-        $task->image       = $filename;
-        $task->rank        = $request->rank;
-        $task->type        = $request->type;
-    
-        if (!$task->save()) {
-        
-            $code = 1;
-            $err_msg = "Some problem";
-        
-        }else{
+                $file     = $request->file('image');
+                $filename = date('YmdHi').$file->getClientOriginalName();
+                $file->move(public_path('backend/images/task'), $filename);
+            
+            }else{
+
+                $filename = $request->old_image;
+
+            }
+
+            Task::where('id', $request->id)->update([
+                'flag_id'     => $request->flag_id,
+                'title'       => $request->title,
+                'description' => $request->description,
+                'user_id'     => $request->user_id,
+                'image'       => $filename,
+                'rank'        => $request->rank,
+                'type'        => $request->type
+            ]);
 
             $this->sync_task();
+
+        }else{
+
+            if($request->file('image')){
+
+                $file     = $request->file('image');
+                $filename = date('YmdHi').$file->getClientOriginalName();
+                $file->move(public_path('backend/images/task'), $filename);
+            
+            }
+    
+            $task              = new Task();
+            $task->flag_id     = $request->flag_id;
+            $task->title       = $request->title;
+            $task->description = $request->description;
+            $task->user_id     = $request->user_id;
+            $task->image       = $filename;
+            $task->rank        = $request->rank;
+            $task->type        = $request->type;
         
-        };
+            if (!$task->save()) {
+            
+                $code = 1;
+                $err_msg = "Some problem";
+            
+            }else{
+    
+                $this->sync_task();
+            
+            };
+            
+        }
 
         $return = [
             "code"    => $code,
