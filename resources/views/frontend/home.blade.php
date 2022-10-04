@@ -158,50 +158,55 @@
                 <div class="mt-3">
                     <div class="card">
                         <div class="card-body">
-                            <table class="table table-bordered table-responsive">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th width="25%">
-                                            Nama Project
-                                        </th>
-                                        <th>
-                                            Total Pekerjaan
-                                        </th>
-                                        <th>
-                                            Selesai
-                                        </th>
-                                        <th>
-                                            Programmer
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="marquee tbody-list-project">
-                                    @foreach ($html_project as $item)
+                            <div class="table-responsive">
+                                <table class="align-middle table table-bordered">
+                                    <thead class="table-dark">
                                         <tr>
-                                            <td>
-                                                <b class="project-name-blue">
-                                                    {{ $item['project_name'] }}
-                                                </b>
-                                            </td>
-                                            <td>
-                                                {{ $item['all_task'] }}
-                                            </td>
-                                            <td>
-                                                {{ $item['finished_task'] }}
-                                            </td>
-                                            <td>
-                                                {{ $item['name'] }}
-                                            </td>
+                                            <th width="25%">
+                                                Nama Project
+                                            </th>
+                                            <th>
+                                                Total Pekerjaan
+                                            </th>
+                                            <th>
+                                                Selesai
+                                            </th>
+                                            <th>
+                                                Programmer
+                                            </th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody class="marquee tbody-list-project">
+                                        @foreach ($html_project as $item)
+                                            <tr>
+                                                <td>
+                                                    <b class="project-name-blue">
+                                                        {{ $item['project_name'] }}
+                                                    </b>
+                                                </td>
+                                                <td>
+                                                    {{ $item['all_task'] }}
+                                                </td>
+                                                <td>
+                                                    {{ $item['finished_task'] }}
+                                                </td>
+                                                <td>
+                                                    {{ $item['name'] }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
         </div>
+
+        <br>
+
         <!-- list job -->
         <div class="row content-task">
 

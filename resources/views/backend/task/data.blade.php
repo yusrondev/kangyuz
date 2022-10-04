@@ -38,7 +38,7 @@
                                 <th>Project</th>
                                 <th>Judul</th>
                                 <th>Programmer</th>
-                                <th>Rank</th>
+                                <th>Level</th>
                                 <th>Type</th>
                                 <th width="7%">Status</th>
                                 <th>Action</th>
@@ -178,9 +178,10 @@
                         </div>
 
                         <div class="position-relative row form-group">
-                            <label for="rank" class="col-sm-2 col-form-label">Rank <b style="color:red">*</b></label>
+                            <label for="rank" class="col-sm-2 col-form-label">Level <b style="color:red">*</b></label>
                             <div class="col-sm-10">
                                 <select name="rank" id="rank" class="form-control">
+                                    <option value="0" disabled selected>- Pilih Level -</option>
                                     <option value="Easy">Easy</option>
                                     <option value="Medium">Medium</option>
                                     <option value="Hard">Hard</option>
@@ -303,12 +304,12 @@
             $('.project-name').attr('disabled', true);
             $('#flag_id').val('0');
             $('#id_task').val('');
+            $('#rank').val('0');
             $('#user_id').val('0');
             $('#type').val('0');
             $('#project_name').val('');
             $('#title').val('');
             $('#description').text('');
-            $('#rank').val('');
             $('.modal-title').text('Tambah Task');
         });
         
