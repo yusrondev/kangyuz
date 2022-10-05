@@ -156,47 +156,46 @@
 
             <div class="col-md-6">
                 <div class="mt-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="table-responsive">
+                    <div class="card pb-0">
+                        <div class="card-body p-2 pb-0">
+                            <div class="table-responsive" style="overflow: hidden;">
                                 <table class="align-middle table table-bordered">
                                     <thead class="table-dark">
                                         <tr>
-                                            <th width="25%">
+                                            <th style="text-align: center" width="25%">
                                                 Nama Project
                                             </th>
-                                            <th>
+                                            <th style="text-align: center">
                                                 Total Pekerjaan
                                             </th>
-                                            <th>
+                                            <th style="text-align: center">
                                                 Selesai
                                             </th>
-                                            <th>
+                                            <th style="text-align: center">
                                                 Programmer
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody class="marquee tbody-list-project">
-                                        @foreach ($html_project as $item)
-                                            <tr>
-                                                <td>
-                                                    <b class="project-name-blue">
-                                                        {{ $item['project_name'] }}
-                                                    </b>
-                                                </td>
-                                                <td>
-                                                    {{ $item['all_task'] }}
-                                                </td>
-                                                <td>
-                                                    {{ $item['finished_task'] }}
-                                                </td>
-                                                <td>
-                                                    {{ $item['name'] }}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
+                                    
                                 </table>
+                                <div style="margin-top: -15px;max-height:166px">
+                                    <marquee style="max-height: 166px" Vspace="1" scrollmount="900" direction="up" scrolldelay="120" behavior="" class="tbody-list-project">
+                                        @foreach ($html_project as $item)
+                                            <div class="row mb-1" style="background-color: #f5f5f5;padding:5px">
+                                                <div class="col-md-3">
+                                                    <span class="job-title">
+                                                        <b class="bg-green">
+                                                            {{ $item['project_name'] }}
+                                                        </b>
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-3" style="font-weight: bolder;text-align:center">{{ $item['all_task'] }}</div>
+                                                <div class="col-md-3" style="font-weight: bolder;text-align:center">{{ $item['finished_task'] }}</div>
+                                                <div class="col-md-3" style="font-weight: bolder;text-align:center">{{ $item['name'] }}</div>
+                                            </div>
+                                        @endforeach
+                                    </marquee>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -218,10 +217,10 @@
                             <div class='profile-header'>
                                 <div class='row'>
                                     <p class='center nameof'>
-                                        {{ $data['name'] }}
+                                        {{ ucfirst($data['name']) }}
                                     </p>
                                     <span class='job-title'>
-                                        <b class='bg-green'>{{ $data['project_name'] }}</b>
+                                        <b class='bg-green'>{{ ucfirst($data['project_name']) }}</b>
                                     </span>
                                 </div>
                             </div>
@@ -264,10 +263,10 @@
                                             <div class='profile-header'>
                                                 <div class='row'>
                                                     <p class='center nameof'>
-                                                        ${value.name}
+                                                        ${capitalizeFirstLetter(value.name)}
                                                     </p>
                                                     <span class='job-title'>
-                                                        <b class='bg-green'>${value.project_name}</b>
+                                                        <b class='bg-green'>${capitalizeFirstLetter(value.project_name)}</b>
                                                     </span>
                                                 </div>
                                             </div>
@@ -283,20 +282,18 @@
 
             $.each(data.task.html_project, function(key, value) {
 
-                list_project += `<tr class="push-notif-${value.user_id}">
-                                        <td>
-                                            <b class="project-name-blue">${value.project_name}</b>
-                                        </td>
-                                        <td>
-                                            ${value.all_task}
-                                        </td>
-                                        <td>
-                                            ${value.finished_task}
-                                        </td>
-                                        <td>
-                                            ${value.name}
-                                        </td>
-                                    </tr>`;
+                list_project += `<div class="row mb-1 push-notif-${value.user_id}" style="background-color: #f5f5f5;padding:5px">
+                                    <div class="col-md-3">
+                                        <span class="job-title">
+                                            <b class="bg-green">
+                                                ${value.project_name}
+                                            </b>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-3" style="font-weight: bolder;text-align:center">${value.all_task}</div>
+                                    <div class="col-md-3" style="font-weight: bolder;text-align:center">${value.finished_task}</div>
+                                    <div class="col-md-3" style="font-weight: bolder;text-align:center">${value.name}</div>
+                                </div>`;
             });
 
             var score_task = "";
@@ -349,13 +346,18 @@
 
             var class_blink = data.task.push_notif.user_id;
     
-            for (let index = 0; index < 6; index++) {
+            for (let index = 0; index < 8; index++) {
                 
                 $(".push-notif-"+class_blink).fadeOut(300);
                 $(".push-notif-"+class_blink).fadeIn(300);
                 
             }
         });
+
+        function capitalizeFirstLetter(string) {
+         return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
 
     });
 </script>

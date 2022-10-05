@@ -445,6 +445,7 @@
         </div>
     </div>
     <script type="text/javascript" src="{{ asset('backend/js/jquery-3.6.1.js') }}"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
     <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('backend/scripts/main.js') }}"></script>
     <script type="text/javascript" src="{{ url('js/app.js') }}"></script>

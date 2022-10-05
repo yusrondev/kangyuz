@@ -209,6 +209,8 @@
 
                 var form_data = new FormData($("#form-task")[0]);
                 
+                $('body').append(`<div class="se-pre-con"></div>`);
+
                 jQuery.ajax({
                 processData: false,
                 contentType: false,  
@@ -223,7 +225,9 @@
                         console.log(data);
                     });
                 
-                    location.reload(); 
+                    setTimeout(function(){
+                        window.location.reload(1);
+                    }, 1000);
                     
                 }});
             });

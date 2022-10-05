@@ -71,7 +71,7 @@ class Home extends Controller
                                         ->whereDate('tasks.created_at', Carbon::today())
                                         ->groupBy('user_id')
                                         ->orderBy('count_task','DESC')
-                                        ->limit(3)
+                                        ->limit(2)
                                         ->get();
 
         $html_score_task = array();
