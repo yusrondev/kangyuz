@@ -27,6 +27,7 @@ class FlagController extends Controller
 
         $flag           = new Flag();
         $flag->name     = $request->name;
+        $flag->key      = strtolower(str_replace(" ", "_", $request->name));
         
         if (!$flag->save()) {
         
@@ -50,6 +51,7 @@ class FlagController extends Controller
 
         $flag           = Flag::find($request->id);
         $flag->name     = $request->name;
+        $flag->key      = str_replace(" ", "_", $request->name);
         
         if (!$flag->save()) {
         

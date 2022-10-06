@@ -4,9 +4,12 @@ use App\Http\Controllers\backend\Dashboard;
 use App\Http\Controllers\backend\TaskController;
 use App\Http\Controllers\backend\FlagController;
 use App\Http\Controllers\frontend\Home;
+use App\Http\Controllers\frontend\TaskController as AppTaskController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [Home::class, 'index']);
+// Route::get('/', [Home::class, 'index']);
+Route::view('/', 'index');
+Route::get('/task/{flag}', [AppTaskController::class, 'index']);
 
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])->group(function () {
 

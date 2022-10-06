@@ -63,7 +63,7 @@ class TaskController extends Controller
                 'type'        => $request->type
             ]);
 
-            $this->sync_task($request->user_id);
+            $this->sync_task($request->user_id, $request->id);
 
         }else{
 
@@ -91,7 +91,7 @@ class TaskController extends Controller
             
             }else{
     
-                $this->sync_task($request->user_id);
+                $this->sync_task($request->user_id, $task->id);
             
             };
             
@@ -118,15 +118,22 @@ class TaskController extends Controller
             'status' => $request->status
         ]);
 
-        $this->sync_task($request->user_id);
+        $this->sync_task($request->user_id, $id);
 
         return json_encode('success');
     }
 
-    public function sync_task($user_id)
+    public function sync_task($user_id, $id)
     {
+
+        //for flag key
+        $flag  = Task::with('flag')->where('id', $id)->first();
+
         $task = Task::select('*')->addSelect(DB::raw('count(user_id) as count_task, user_id, status'))
-                                     ->with('user')
+                                     ->with(['user','flag'])
+                                     ->whereHas('flag', function ($q) use ($flag){
+                                        $q->where('key', $flag->flag->key);
+                                     })
                                      ->where("status","!=","finish")
                                      ->groupBy('user_id')
                                      ->orderBy('count_task','DESC')
@@ -151,13 +158,18 @@ class TaskController extends Controller
                 "count"        => $value->count_task,
                 "name"         => $value->user->name,
                 "project_name" => $value->user->project_name,
-                "class_count"  => $class_count
+                "class_count"  => $class_count,
+                "key"          => $flag->flag->key
+
             
             ];
         }
 
         $projectList = Task::select('*')->addSelect(DB::raw('count(user_id) as all_task, user_id, status'))
-                                        ->with('user')
+                                        ->with(['user','flag'])
+                                        ->whereHas('flag', function ($q) use ($flag){
+                                            $q->where('key', $flag->flag->key);
+                                         })
                                         ->groupBy('user_id')
                                         ->orderBy('all_task','DESC')
                                         ->get();
@@ -180,7 +192,10 @@ class TaskController extends Controller
         }
 
         $scoreList = Task::select('*')->addSelect(DB::raw('count(user_id) as count_task, user_id, status'))
-                                        ->with('user')
+                                        ->with(['user','flag'])
+                                        ->whereHas('flag', function ($q) use ($flag){
+                                            $q->where('key', $flag->flag->key);
+                                         })
                                         ->where('status','finish')
                                         ->whereDate('tasks.created_at', Carbon::today())
                                         ->groupBy('user_id')

@@ -239,6 +239,7 @@
 <script src="{{ url('js/app.js') }}"></script>
 <!-- Pusher -->
 <script>
+
     $(function() {
         const Echo = window.Echo;
 
@@ -247,111 +248,116 @@
 
         channel.listen('TaskEvent', function(data) {
 
-            console.log(data);
-            
-            $('.content-task').html('');
-            $('.content-score-task').html('');
-            $('.tbody-list-project').html('');
+            var url = $(location).attr('href'),
+            parts = url.split("/"),
+            last_part = parts[parts.length-1];
 
-            var html_task   = "";
-            var class_count = "";
-            $.each(data.task.html_task, function(key, value) {
+            if(last_part == data.task.html_task[0].key){
+                
+                $('.content-task').html('');
+                $('.content-score-task').html('');
+                $('.tbody-list-project').html('');
 
-                html_task += `<div class='col-md-3 p-3'>
-                                    <div class='card push-notif-${value.user_id}'>
-                                        <div class='card-body'>
-                                            <div class='profile-header'>
-                                                <div class='row'>
-                                                    <p class='center nameof'>
-                                                        ${capitalizeFirstLetter(value.name)}
-                                                    </p>
-                                                    <span class='job-title'>
-                                                        <b class='bg-green'>${capitalizeFirstLetter(value.project_name)}</b>
-                                                    </span>
+                var html_task   = "";
+                var class_count = "";
+                $.each(data.task.html_task, function(key, value) {
+
+                    html_task += `<div class='col-md-3 p-3'>
+                                        <div class='card push-notif-${value.user_id}'>
+                                            <div class='card-body'>
+                                                <div class='profile-header'>
+                                                    <div class='row'>
+                                                        <p class='center nameof'>
+                                                            ${capitalizeFirstLetter(value.name)}
+                                                        </p>
+                                                        <span class='job-title'>
+                                                            <b class='bg-green'>${capitalizeFirstLetter(value.project_name)}</b>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class='${value.class_count}'>
+                                                    ${value.count}
                                                 </div>
                                             </div>
-                                            <div class='${value.class_count}'>
-                                                ${value.count}
+                                        </div>
+                                    </div>`;
+                });
+
+                var list_project = "";
+
+                $.each(data.task.html_project, function(key, value) {
+
+                    list_project += `<div class="row mb-1 push-notif-${value.user_id}" style="background-color: #f5f5f5;padding:5px">
+                                        <div class="col-md-3">
+                                            <span class="job-title">
+                                                <b class="bg-green">
+                                                    ${value.project_name}
+                                                </b>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-3" style="font-weight: bolder;text-align:center">${value.all_task}</div>
+                                        <div class="col-md-3" style="font-weight: bolder;text-align:center">${value.finished_task}</div>
+                                        <div class="col-md-3" style="font-weight: bolder;text-align:center">${value.name}</div>
+                                    </div>`;
+                });
+
+                var score_task = "";
+
+                var count_project = data.task.html_score_task;
+
+                if (count_project.length == 0) {
+                    score_task = `<div class="mt-3">
+                                    <div class="alert alert-info">
+                                        <center>
+                                            <h3>Belum ada ranking hari ini</h3>
+                                        </center>
+                                    </div>
+                                </div>`;
+                }
+
+                $.each(data.task.html_score_task, function(key, value) {
+
+                    score_task += `<div class="card mt-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <div class="rank-${key + 1}">
+                                                    <h3 class="number">
+                                                        ${key + 1}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="people-of-rank">
+                                                    <h3>
+                                                        ${value.name}
+                                                        <span class="project-name">- ${value.project_name}</span>
+                                                    </h3>
+                                                </div>
+                                                <div class="description">
+                                                    Mengerjakan ${value.count_task} list hari ini!
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>`;
-            });
-
-            var list_project = "";
-
-            $.each(data.task.html_project, function(key, value) {
-
-                list_project += `<div class="row mb-1 push-notif-${value.user_id}" style="background-color: #f5f5f5;padding:5px">
-                                    <div class="col-md-3">
-                                        <span class="job-title">
-                                            <b class="bg-green">
-                                                ${value.project_name}
-                                            </b>
-                                        </span>
-                                    </div>
-                                    <div class="col-md-3" style="font-weight: bolder;text-align:center">${value.all_task}</div>
-                                    <div class="col-md-3" style="font-weight: bolder;text-align:center">${value.finished_task}</div>
-                                    <div class="col-md-3" style="font-weight: bolder;text-align:center">${value.name}</div>
-                                </div>`;
-            });
-
-            var score_task = "";
-
-            var count_project = data.task.html_score_task;
-
-            if (count_project.length == 0) {
-                score_task = `<div class="mt-3">
-                                <div class="alert alert-info">
-                                    <center>
-                                        <h3>Belum ada ranking hari ini</h3>
-                                    </center>
-                                </div>
-                            </div>`;
-            }
-
-            $.each(data.task.html_score_task, function(key, value) {
-
-                score_task += `<div class="card mt-3">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-1">
-                                            <div class="rank-${key + 1}">
-                                                <h3 class="number">
-                                                    ${key + 1}
-                                                </h3>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <div class="people-of-rank">
-                                                <h3>
-                                                    ${value.name}
-                                                    <span class="project-name">- ${value.project_name}</span>
-                                                </h3>
-                                            </div>
-                                            <div class="description">
-                                                Mengerjakan ${value.count_task} list hari ini!
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`;
-            });
-            
-            $('.content-task').append(html_task);
-            $('.content-score-task').html(score_task);
-            $('.tbody-list-project').append(list_project);
-
-            sound.play();
-
-            var class_blink = data.task.push_notif.user_id;
-    
-            for (let index = 0; index < 8; index++) {
+                });
                 
-                $(".push-notif-"+class_blink).fadeOut(300);
-                $(".push-notif-"+class_blink).fadeIn(300);
-                
-            }
+                $('.content-task').append(html_task);
+                $('.content-score-task').html(score_task);
+                $('.tbody-list-project').append(list_project);
+
+                sound.play();
+
+                var class_blink = data.task.push_notif.user_id;
+        
+                for (let index = 0; index < 8; index++) {
+                    
+                    $(".push-notif-"+class_blink).fadeOut(300);
+                    $(".push-notif-"+class_blink).fadeIn(300);
+                    
+                }
+            }   
         });
 
         function capitalizeFirstLetter(string) {

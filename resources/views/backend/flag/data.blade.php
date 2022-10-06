@@ -129,7 +129,7 @@
                 dataType: "JSON",
                 data: form_data,
                 success: function(result) {
-                    refresh_data();
+                    location.reload();
                 }
             });
             e.preventDefault();
@@ -147,7 +147,7 @@
                 dataType: "JSON",
                 data: form_data,
                 success: function(result) {
-                    refresh_data();
+                    location.reload();
                 }
             });
             e.preventDefault();

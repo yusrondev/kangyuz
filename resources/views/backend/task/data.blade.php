@@ -112,17 +112,6 @@
                     <input type="hidden" name="id" id="id_task">
                     <input type="hidden" name="old_image" id="old_image">
                     <div class="modal-body">
-                        <div class="position-relative row form-group">
-                            <label for="flag_id" class="col-sm-2 col-form-label">Flag <b style="color:red">*</b></label>
-                            <div class="col-sm-10">
-                                <select name="flag_id" id="flag_id" class="form-control">
-                                    <option value="0" selected disabled>- Pilih Flag -</option>
-                                    @foreach($flag as $flags)
-                                        <option value="{{ $flags->id }}">{{ $flags->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
 
                         <div class="position-relative row form-group">
                             <label for="user_id" class="col-sm-2 col-form-label">Programmer <b style="color:red">*</b></label>
@@ -130,7 +119,19 @@
                                 <select name="user_id" id="user_id" class="form-control choose-user">
                                     <option value="0" selected disabled>- Pilih Programmer -</option>
                                     @foreach($users as $user)
-                                        <option value="{{ $user->id }}" data-project="{{ $user->project_name }}">{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}" data-flag="{{ $user->flag_id }}" data-project="{{ $user->project_name }}">{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="position-relative row form-group">
+                            <label for="flag_id" class="col-sm-2 col-form-label">Flag <b style="color:red">*</b></label>
+                            <div class="col-sm-10">
+                                <select name="flag_id" id="flag_id" class="form-control">
+                                    <option value="0" selected disabled>- Pilih Flag -</option>
+                                    @foreach($flag as $flags)
+                                        <option value="{{ $flags->id }}">{{ $flags->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -235,6 +236,8 @@
 
         $(".choose-user").on("change",function(){
             var project_name = $(this).find(":selected").data("project");
+            var flag         = $(this).find(":selected").data("flag");
+            $("#flag_id").val(flag);
             $(".project-name").val(project_name);
         });
 

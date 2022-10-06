@@ -19,6 +19,16 @@
                 <x-jet-input id="project_name" class="block mt-1 w-full" type="text" name="project_name" :value="old('project_name')" required autofocus autocomplete="project_name" />
             </div>
 
+            <div>
+                <x-jet-label for="project_name" class="mt-3" value="{{ __('Saya Sebagai') }}" />
+                <select style="border-radius: 5px; border:1px solid #e1e1e1 !important" name="flag_id" id="flag_id" class="block mt-1 w-full" id="">
+                    <option value="" selected disabled>- Pilih Flag -</option>
+                    @foreach ($flag as $item)
+                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class="mt-4">
                 <x-jet-label for="email" value="{{ __('Email') }}" />
                 <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
