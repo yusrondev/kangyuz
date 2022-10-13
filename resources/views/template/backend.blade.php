@@ -343,6 +343,10 @@
                                 </li> --}}
                             <li>
                                 @if (Auth::user()->level == 1)
+                                <a href="{{ url('administrator/user-management') }}" class="@yield('active-menu-user-management')">
+                                    <i class="metismenu-icon pe-7s-glasses"></i>
+                                    User Management
+                                </a>
                                 <a href="{{ url('administrator/flag') }}" class="@yield('active-menu-flag')">
                                     <i class="metismenu-icon pe-7s-pendrive"></i>
                                     Flag

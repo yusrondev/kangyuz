@@ -5,6 +5,7 @@ use App\Http\Controllers\backend\TaskController;
 use App\Http\Controllers\backend\FlagController;
 use App\Http\Controllers\frontend\Home;
 use App\Http\Controllers\frontend\TaskController as AppTaskController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', [Home::class, 'index']);
@@ -34,6 +35,10 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
         Route::post('data-flag', [FlagController::class, 'show']);
         Route::post('update-flag', [FlagController::class, 'update']);
         Route::delete('destroy-flag/{flag}', [FlagController::class, 'destroy']);
+
+        // UserManagement
+        Route::resource('user-management', UserManagementController::class);
+        Route::post('user-management/{user}/reset-task', [UserManagementController::class, 'resetTask'])->name('user-management.reset-task');
 
     });
     
