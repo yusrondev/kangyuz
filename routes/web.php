@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
         Route::post('store-flag', [FlagController::class, 'store']);
         Route::post('data-flag', [FlagController::class, 'show']);
         Route::post('update-flag', [FlagController::class, 'update']);
+        Route::delete('destroy-flag/{flag}', [FlagController::class, 'destroy']);
 
     });
     

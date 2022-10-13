@@ -10,14 +10,12 @@ class FlagController extends Controller
 {
     public function index()
     {
-        return view('backend.flag.data', [
-            'flags' => Flag::all()
-        ]);
+        return view('backend.flag.data');
     }
 
     public function show()
     {
-        return json_encode(Flag::all());
+        return json_encode(Flag::withCount('task')->latest()->get());
     }
 
     public function store(Request $request)
@@ -54,6 +52,26 @@ class FlagController extends Controller
         $flag->key      = str_replace(" ", "_", $request->name);
         
         if (!$flag->save()) {
+        
+            $code = 1;
+            $err_msg = "Some problem";
+        
+        }
+
+        $return = [
+            "code"    => $code,
+            "err_msg" => $err_msg,
+        ];
+
+        return json_encode($return);
+    }
+
+    public function destroy(Flag $flag)
+    {
+        $code     = 0;
+        $err_msg  = "successfully";
+        
+        if (!$flag->delete()) {
         
             $code = 1;
             $err_msg = "Some problem";
