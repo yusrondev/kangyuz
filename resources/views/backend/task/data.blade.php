@@ -101,7 +101,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Tambah Task</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -137,7 +137,7 @@
                     </div>
 
                     <div class="position-relative row form-group">
-                        <label for="type" class="col-sm-2 col-form-label">type <b style="color:red">*</b></label>
+                        <label for="type" class="col-sm-2 col-form-label">Type <b style="color:red">*</b></label>
                         <div class="col-sm-10">
                             <select name="type" id="type" name="type" class="form-control">
                                 <option value="0" disabled selected>- Pilih Type -</option>
@@ -192,7 +192,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                     <button type="button" class="btn btn-primary save">Simpan</button>
                 </div>
             </form>
