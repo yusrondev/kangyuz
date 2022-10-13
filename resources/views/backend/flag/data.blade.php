@@ -35,6 +35,7 @@
                         <tr>
                             <th width="20">#</th>
                             <th>Flag Name</th>
+                            <th>Number Of Task</th>
                             <th width="80">Action</th>
                         </tr>
                     </thead>
@@ -202,10 +203,12 @@
                 let forTable = "";
                 let no       = 1;
                 result.forEach(function(val){
+                    // log(val);
                     forTable += `
                         <tr>
                             <td>${no++}</td>
                             <td>${val.name}</td>
+                            <td><span class="text-info">${val.task_count}</span></td>
                             <td>
 
                                 <form action="destroy-flag/${val.id}" class="form-delete" method="POST">
