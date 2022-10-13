@@ -26,6 +26,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
         Route::post('store-task', [TaskController::class, 'store']);
         Route::get('update-task/{id}', [TaskController::class, 'update_status']);
         Route::get('get-task/{id}', [TaskController::class, 'get_task']);
+        Route::delete('delete-task/{task}', [TaskController::class, 'destroy']);
     
         // flag
         Route::get('flag', [FlagController::class, 'index']);

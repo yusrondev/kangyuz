@@ -119,7 +119,16 @@ class TaskController extends Controller
         ]);
 
         $this->sync_task($request->user_id, $id);
-
+        
+        return json_encode('success');
+    }
+    
+    public function destroy(Task $task)
+    {
+        $id      = $task->id;
+        $user_id = $task->user_id;
+        $task->delete();
+        $this->sync_task($user_id, $id);
         return json_encode('success');
     }
 
