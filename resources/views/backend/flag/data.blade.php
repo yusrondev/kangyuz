@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="page-title-actions">
-            <button type="button" class="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target="#modal-add">
+            <button type="button" class="btn mr-2 mb-2 btn-primary btn-add">
                 <i class="fa fa-plus"></i>
             </button>
         </div>
@@ -33,9 +33,9 @@
                 <table class="mb-0 table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th width="20">#</th>
                             <th>Flag Name</th>
-                            <th>Action</th>
+                            <th width="80">Action</th>
                         </tr>
                     </thead>
                     <tbody class="table-body-data">
@@ -58,7 +58,7 @@
             <form id="form-flag" enctype="multipart/form-data">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Tambah Flag</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary save">Simpan</button>
                 </div>
             </form>
@@ -85,7 +85,7 @@
             <form id="form-edit-flag" enctype="multipart/form-data">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Edit Flag</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -99,7 +99,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary save">Edit</button>
                 </div>
             </form>
@@ -113,9 +113,6 @@
     var modal_edit = new bootstrap.Modal(document.getElementById('modal-edit'));
     $(document).ready(function() {
         refresh_data();
-        const Echo = window.Echo;
-        const user_id = $('#user_id');
-        const description = $('#description');
 
         $("#form-flag").submit(function(e) {
 
@@ -129,7 +126,8 @@
                 dataType: "JSON",
                 data: form_data,
                 success: function(result) {
-                    location.reload();
+                    // location.reload();
+                    refresh_data();
                 }
             });
             e.preventDefault();
@@ -147,15 +145,45 @@
                 dataType: "JSON",
                 data: form_data,
                 success: function(result) {
-                    location.reload();
+                    // location.reload();
+                    refresh_data();
                 }
             });
             e.preventDefault();
         });
+
+        
+    });
+    $("body").on("submit", ".form-delete", function(e) {
+
+        e.preventDefault();
+
+        // var form_data = new FormData($(this));
+
+        jQuery.ajax({
+            processData: false,
+            contentType: false,
+            url: $(this).attr("action"),
+            method: 'DELETE',
+            dataType: "JSON",
+            data: $(this).serialize(),
+            success: function(result) {
+                // location.reload();
+                refresh_data();
+            }
+        });
     });
 
+    // ADD
+    $("body").on("click", ".btn-add", function(){
+        $("#modal-add").modal('show');
+        
+        $('input[name="name"]').val();
+    });
+
+    // EDIT
     $("body").on("click", ".btn-edit", function(){
-        modal_edit.show();
+        $("#modal-edit").modal('show');
         
         $('input[name="name"]').val($(this).data("name"));
         $('input[name="id"]').val($(this).data("id"));
@@ -172,15 +200,22 @@
             success: function(result) {
                 
                 let forTable = "";
+                let no       = 1;
                 result.forEach(function(val){
                     forTable += `
                         <tr>
-                            <td>${val.id}</td>
+                            <td>${no++}</td>
                             <td>${val.name}</td>
                             <td>
-                                <button type="button" class="btn mr-2 mb-2 btn-warning btn-sm btn-edit" data-id="${val.id}" data-name="${val.name}">
-                                    <i class="fa fa-edit"></i>
-                                </button>
+
+                                <form action="destroy-flag/${val.id}" class="form-delete" method="POST">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-warning btn-sm btn-edit" data-id="${val.id}" data-name="${val.name}">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                </form>
                             </td>
                         </tr>
                     `;

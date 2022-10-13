@@ -67,4 +67,24 @@ class FlagController extends Controller
 
         return json_encode($return);
     }
+
+    public function destroy(Flag $flag)
+    {
+        $code     = 0;
+        $err_msg  = "successfully";
+        
+        if (!$flag->delete()) {
+        
+            $code = 1;
+            $err_msg = "Some problem";
+        
+        }
+
+        $return = [
+            "code"    => $code,
+            "err_msg" => $err_msg,
+        ];
+
+        return json_encode($return);
+    }
 }
