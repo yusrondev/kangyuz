@@ -14,7 +14,7 @@ class TaskController extends Controller
     {
         $task = Task::select('*')->addSelect(DB::raw('count(user_id) as count_task, user_id, status'))
                                      ->with(['user','flag'])
-                                     ->where("status","!=","finish")
+                                     ->whereIn('status',['process','new'])
                                      ->whereHas('flag', function ($q) use ($flag){
                                             $q->where('key', $flag);
                                      })
@@ -52,6 +52,7 @@ class TaskController extends Controller
                                         ->whereHas('flag', function ($q) use ($flag){
                                             $q->where('key', $flag);
                                         })
+                                        ->where('status','!=','deleted')
                                         ->groupBy('user_id')
                                         ->orderBy('all_task','DESC')
                                         ->get();

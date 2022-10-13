@@ -252,7 +252,15 @@
             parts = url.split("/"),
             last_part = parts[parts.length-1];
 
-            if(last_part == data.task.html_task[0].key){
+            var page = "";
+
+            if (data.task.html_task.length === 0) {
+                page = last_part;
+            }else{
+                page = data.task.html_task[0].key;
+            }
+
+            if(last_part == page){
                 
                 $('.content-task').html('');
                 $('.content-score-task').html('');

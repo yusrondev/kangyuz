@@ -18,10 +18,10 @@ class TaskController extends Controller
     {
         if (Auth::user()->level == 1) {
             $users = User::get();
-            $task  = Task::with(['user','flag'])->orderBy('id','desc')->paginate(10);
+            $task  = Task::with(['user','flag'])->whereIn('status',['process','finish','new'])->orderBy('id','desc')->paginate(10);
         }else{
             $users = User::where('id', Auth::user()->id)->get();
-            $task  = Task::with(['user','flag'])->where('user_id', Auth::user()->id)->orderBy('id','desc')->paginate(10);
+            $task  = Task::with(['user','flag'])->where('user_id', Auth::user()->id)->whereIn('status',['process','finish','new'])->orderBy('id','desc')->paginate(10);
         }
 
         return view('backend/task/data',[
@@ -122,12 +122,17 @@ class TaskController extends Controller
         
         return json_encode('success');
     }
-    
+
     public function destroy(Task $task)
     {
         $id      = $task->id;
         $user_id = $task->user_id;
-        $task->delete();
+
+        Task::where('id',$id)->update([
+            'status' => 'deleted'
+        ]);
+
+        // $task->delete();
         $this->sync_task($user_id, $id);
         return json_encode('success');
     }
@@ -143,7 +148,7 @@ class TaskController extends Controller
                                      ->whereHas('flag', function ($q) use ($flag){
                                         $q->where('key', $flag->flag->key);
                                      })
-                                     ->where("status","!=","finish")
+                                     ->whereIn('status',['process','new'])
                                      ->groupBy('user_id')
                                      ->orderBy('count_task','DESC')
                                      ->get();
@@ -179,6 +184,7 @@ class TaskController extends Controller
                                         ->whereHas('flag', function ($q) use ($flag){
                                             $q->where('key', $flag->flag->key);
                                          })
+                                        ->where('status','!=','deleted')
                                         ->groupBy('user_id')
                                         ->orderBy('all_task','DESC')
                                         ->get();
