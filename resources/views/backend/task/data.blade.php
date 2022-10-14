@@ -29,64 +29,67 @@
         <div class="main-card mb-3 card">
             <div class="card-body">
                 <h5 class="card-title">Data pekerjaan</h5>
-                <table class="mb-0 table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Flag</th>
-                            <th>Project</th>
-                            <th>Judul</th>
-                            <th>Programmer</th>
-                            <th>Level</th>
-                            <th>Type</th>
-                            <th width="7%">Status</th>
-                            <th width="150">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($task as $item)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->flag->name }}</td>
-                            <td>{{ $item->user->project_name }}</td>
-                            <td>{{ $item->title }}</td>
-                            <td>{{ $item->user->name }}</td>
-                            <td>{{ $item->rank }}</td>
-                            <td>{{ $item->type }}</td>
-                            <td class="text-center">
-                                @if($item->status == 'new')
-                                <span class="status-new">New</span>
-                                @elseif($item->status == 'process')
-                                <span class="status-process">Process</span>
-                                @else
-                                <span class="status-finish">Selesai</span>
-                                @endif
-                            </td>
-                            <td>
-                                <form action="delete-task/{{ $item->id }}" method="POST" class="form-delete">
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button type="button" class="btn btn-sm btn-light detail" data-id="{{ $item->id }}">
-                                        <i class="fa fa-eye"></i>
-                                    </button>
-
+                <div class="table-responsive">
+                    <table class="mb-0 table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Flag</th>
+                                <th>Project</th>
+                                <th>Judul</th>
+                                <th>Programmer</th>
+                                <th>Level</th>
+                                <th>Type</th>
+                                <th width="7%">Status</th>
+                                <th width="150">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($task as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->flag->name }}</td>
+                                <td>{{ $item->user->project_name }}</td>
+                                <td>{{ $item->title }}</td>
+                                <td>{{ $item->user->name }}</td>
+                                <td>{{ $item->rank }}</td>
+                                <td>{{ $item->type }}</td>
+                                <td class="text-center">
                                     @if($item->status == 'new')
-                                    <button type="button" class="btn btn-sm btn-primary update-status" data-userid="{{ $item->user->id }}"
-                                        data-value="process" data-id="{{ $item->id }}">Proses</button>
+                                    <span class="status-new">New</span>
                                     @elseif($item->status == 'process')
-                                    <button type="button" class="btn btn-sm btn-success update-status" data-userid="{{ $item->user->id }}"
-                                        data-value="finish" data-id="{{ $item->id }}">Selesai</button>
+                                    <span class="status-process">Process</span>
+                                    @else
+                                    <span class="status-finish">Selesai</span>
                                     @endif
-                                    
-                                    <button class="btn btn-danger btn-sm float-right btn-delete" type="button"><i class="fa fa-trash"></i></button>
-                                </form>
-
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <form action="delete-task/{{ $item->id }}" method="POST" class="form-delete">
+                                            @csrf
+                                            @method('DELETE')
+    
+                                            <button type="button" class="btn btn-sm btn-light detail" data-id="{{ $item->id }}">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+    
+                                            @if($item->status == 'new')
+                                            <button type="button" class="btn btn-sm btn-primary update-status" data-userid="{{ $item->user->id }}"
+                                                data-value="process" data-id="{{ $item->id }}">Proses</button>
+                                            @elseif($item->status == 'process')
+                                            <button type="button" class="btn btn-sm btn-success update-status" data-userid="{{ $item->user->id }}"
+                                                data-value="finish" data-id="{{ $item->id }}">Selesai</button>
+                                            @endif
+                                            
+                                            <button class="btn btn-danger btn-sm float-right btn-delete" type="button"><i class="fa fa-trash"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
                 {{ $task->links() }}
             </div>
         </div>
