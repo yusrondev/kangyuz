@@ -17,7 +17,7 @@ class FlagController extends Controller
 
     public function show()
     {
-        return json_encode(Flag::all());
+        return json_encode(Flag::withCount('task')->get());
     }
 
     public function store(Request $request)

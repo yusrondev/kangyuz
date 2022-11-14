@@ -199,6 +199,7 @@
             method: 'POST',
             dataType: "JSON",
             success: function(result) {
+                console.log(result);
                 
                 let forTable = "";
                 let no       = 1;
