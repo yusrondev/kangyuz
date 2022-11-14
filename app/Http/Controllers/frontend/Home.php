@@ -4,6 +4,7 @@ namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Task;
+use App\Models\Flag;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -91,6 +92,13 @@ class Home extends Controller
             "html_task"       => $html_task,
             "html_project"    => $html_project,
             "html_score_task" => $html_score_task
+        ]);
+    }
+
+    public function home()
+    {
+        return view('index', [
+            'flags' => Flag::latest()->get()
         ]);
     }
 }

@@ -9,7 +9,7 @@ use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', [Home::class, 'index']);
-Route::view('/', 'index');
+Route::get('/', [Home::class, 'home']);
 Route::get('/task/{flag}', [AppTaskController::class, 'index']);
 
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])->group(function () {

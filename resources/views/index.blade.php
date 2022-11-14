@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,26 +9,28 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 </head>
 <style>
-    body{
+    body {
         background-color: #1e272e
     }
 
-    .p-5{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 800px;
+    .top{
+        margin-top: 320px
     }
 </style>
+
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="p-5">
-                <center>
-                    <img src="{{ asset('images/pandoradev.png') }}" alt="" width="70px"><br>
-                </center>
+    <div class="container top">
+        <div class="row justify-content-center">
+            <div class="col-2 text-center">
+                <img src="{{ asset('images/pandoradev.png') }}" alt="" width="70px">
+            </div>
+            <div class="w-100 mt-5 d-flex justify-content-center gap-2">
+                @foreach ($flags as $see)
+                    <a href="/task/{{ $see->key }}" class="btn btn-outline-light btn-sm mb-2">{{ $see->name }}</a>
+                @endforeach
             </div>
         </div>
     </div>
 </body>
+
 </html>
